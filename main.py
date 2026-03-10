@@ -30,7 +30,7 @@ df_e.to_csv("estoque.csv", index=False)
 if os.path.exists("vendas.csv"):
     df_v = pd.read_csv("vendas.csv")
 else:
-df_v = pd.DataFrame(columns=["Data", "Cliente", "Peca", "Valor"])
+    df_v = pd.DataFrame(columns=["Data", "Cliente", "Peca", "Valor"])
 nova_venda = pd.DataFrame([{"Data": datetime.datetime.now().strftime("%d/%m/%Y"), "Cliente": nome, "Peca": peca, "Valor": total}])
 df_v = pd.concat([df_v, nova_venda], ignore_index=True)
 df_v.to_csv("vendas.csv", index=False)
