@@ -8,8 +8,8 @@ st.set_page_config(page_title="Axion3D Pro", layout="wide")
 st.image("", width=200)
 st.title("🚀 Axion3D - Gestao")
 
-if not os.path.exists("estoque.csv"):
-pd.DataFrame([{"Item": "PLA", "Qtd": 1000.0}]).to_csv("estoque.csv", index=False)
+if.not os.path.exists("estoque.csv"):
+    pd.DataFrame([{"Item": "PLA", "Qtd": 1000.0}]).to_csv("estoque.csv", index=False)
 
 df_e = pd.read_csv("estoque.csv")
 
