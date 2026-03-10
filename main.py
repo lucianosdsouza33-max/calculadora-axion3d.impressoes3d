@@ -4,34 +4,48 @@ import os
 import datetime
 import urllib.parse
 
-st.set_page_config(page_title="Axion3D", layout="wide")
-LOGO = "https://i.ibb.co/LzNfX7z/axion3d-logo.png"
-st.image(LOGO, width=200)
+st.set_page_config(page_title="Axion3D Pro", layout="wide")
 
-def abrir(n):
-    if os.path.exists(n): return pd.read_csv(n)
-    return pd.DataFrame()
+LINK_LOGO = ""
 
-db_e = "est.csv"
-df_e = abrir(db_e)
-if df_e.empty: df_e = pd.DataFrame([{"Item":"PLA","Qtd":1000}])
+def carregar(arq, col):
+if os.path.exists(arq):
+try: return pd.read_csv(arq)
+except: return pd.DataFrame(columns=col)
+return pd.DataFrame(columns=col)
 
-menu = st.sidebar.radio("Menu", ["Calculadora", "Estoque"])
+def salvar(df, arq):
+df.to_csv(arq, index=False)
+
+ARQ_P = "pedidos_axion.csv"
+ARQ_E = "estoque_axion.csv"
+
+df_e = carregar(ARQ_E, ["Item", "Qtd", "Alerta"])
+if df_e.empty:
+df_e = pd.DataFrame([{"Item": "PLA", "Qtd": 1000.0, "Alerta": 200.0}])
+salvar(df_e, ARQ_E)
+
+st.markdown(f'center img src="{LINK_LOGO}" width="200" /center', unsafe_allow_html=True)
+
+menu = st.sidebar.selectbox("Menu", ["Calculadora", "Estoque", "Vendas"])
 
 if menu == "Calculadora":
-    n = st.text_input("Cliente")
-    p = st.number_input("Peso (g)", 50)
-    t = st.number_input("Horas", 2)
-    v = ((p * 0.15) + (t * 1.5)) * 2
-    st.write(f"Preço: R$ {v}")
-    if st.button("Confirmar"):
-        df_e.loc[0,"Qtd"] -= p
-        df_e.to_csv(db_e, index=False)
-        st.success("Vendido!")
+st.header("Novo Orcamento")
+nome = st.text_input("Cliente")
+whats = st.text_input("WhatsApp (Ex: 5551999998888)")
+peca = st.text_input("Projeto")
+peso = st.number_input("Peso (g)", value=50.0)
+tempo = st.number_input("Tempo (h)", value=2.0)
+lucro = st.slider("Lucro %", 50, 500, 100)
+
+elif menu == "Estoque":
+st.header("Estoque")
+st.write(df_e)
+if st.button("Resetar para 1000g"):
+df_e.loc[0, "Qtd"] = 1000.0
+salvar(df_e, ARQ_E)
+st.rerun()
 
 else:
-    st.write(df_e)
-    if st.button("Resetar 1kg"):
-        df_e.loc[0,"Qtd"] = 1000
-        df_e.to_csv(db_e, index=False)
-        st.rerun()
+st.header("Historico")
+st.dataframe(carregar(ARQ_P, ["Data", "Cliente", "Peca", "Valor"]))
