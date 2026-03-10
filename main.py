@@ -52,4 +52,4 @@ if menu == "Vendas":
 if os.path.exists("vendas.csv"):
     st.dataframe(pd.read_csv("vendas.csv"))
 else:
-st.write("Nenhuma venda encontrada.")
+    st.write("Nenhuma venda encontrada.")
