@@ -6,7 +6,7 @@ import urllib.parse
 
 st.set_page_config(page_title="Axion3D Pro", layout="wide")
 st.image("", width=200)
-ifos.path.exists("estoque_axion.csv"):
+if.os.path.exists("estoque_axion.csv"):
   
 df_e=pd.read_csv("estoque_axion.csv")
 else:
