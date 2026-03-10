@@ -7,9 +7,9 @@ import urllib.parse
 st.set_page_config(page_title="Axion3D Pro", layout="wide")
 
 try:
-st.image("", width=200)
+    st.image("", width=200)
 except:
-st.title("Axion3D - Gestao")
+    st.title("Axion3D - Gestao")
 
 if not os.path.exists("estoque.csv"):
     pd.DataFrame([{"Item": "PLA", "Qtd": 1000.0}]).to_csv("estoque.csv", index=False)
